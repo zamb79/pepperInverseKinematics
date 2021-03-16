@@ -30,9 +30,17 @@ def rotMatZ(angle):
 
 
 def solveSquaredEquation(a, b, c):
+    eps = 1e-8
+    b2m4ac = b**2 - 4 * a * c
+    if b2m4ac < eps:
+        return []
+    if abs(a) < eps:
+        if abs(b) < eps:
+            return []
+        return [c/b]
     x1 = (-b + np.sqrt(b**2 - 4*a*c)) / (2*a)
     x2 = (-b - np.sqrt(b**2 - 4*a*c)) / (2*a)
-    return x1, x2
+    return [x1, x2]
 
 
 def forwardKinematics(angles):
@@ -61,13 +69,19 @@ def calculateElbow(circleCenter, circleRadius, circlePlaneNormal, tcpZ, plusOrMi
         B = -n[1] / n[0]
         A = d / n[0] - ze * n[2] / n[0]
         D = A - cc[0]
-        ye = solveSquaredEquation(B**2+1, 2*B*D - 2*cc[1], D**2 + cc[1]**2 + (ze - cc[2])**2 - cr**2)[plusOrMinus]
+        s = solveSquaredEquation(B**2+1, 2*B*D - 2*cc[1], D**2 + cc[1]**2 + (ze - cc[2])**2 - cr**2)
+        if len(s) == 0:
+            return np.array([])
+        ye = s[plusOrMinus]
         xe = B * ye + A
     else:
         B = -n[0] / n[1]
         A = d / n[1] - ze * n[2] / n[1]
         D = A - cc[1]
-        xe = solveSquaredEquation(B**2+1, 2*B*D - 2*cc[0], D**2 + cc[0]**2 + (ze - cc[2])**2 - cr**2)[plusOrMinus]
+        s = solveSquaredEquation(B**2+1, 2*B*D - 2*cc[0], D**2 + cc[0]**2 + (ze - cc[2])**2 - cr**2)
+        if len(s) == 0:
+            return np.array([])
+        xe = s[plusOrMinus]
         ye = B * xe + A
         
     return np.array([xe, ye, ze])
@@ -90,67 +104,72 @@ def inverseKinematics(x, y, z):
     
     # Calculate the center and radius of the circle
     cc = s + shoulderToElbowPlaneDist * u0            # circle center
-    cr = np.sqrt(rs**2 - shoulderToElbowPlaneDist**2) # circle radius
+    rSquared = rs**2 - shoulderToElbowPlaneDist**2
+    if (rSquared < 0):
+        return []
+    cr = np.sqrt(rSquared) # circle radius
     
     solutions = []
     for i in range(0, 2):
         # Calculate elbow position of arm
         elb = calculateElbow(cc, cr, u0, z, i)
-
-        # We know the elbow point, so now we can calculate the angles step by step
-        angles = np.zeros(5)
+        print("elb: ", elb)
+        if len(elb) > 0:
         
-        # Calculate angles 0 and 1: 
-        v_xz = np.array([elb[0], 0, elb[2]])  # vector from shoulder to elbow projected to X/Z plane
-        v_xz0 = v_xz / np.linalg.norm(v_xz)          # normalize vector
+            # We know the elbow point, so now we can calculate the angles step by step
+            angles = np.zeros(5)
+            
+            # Calculate angles 0 and 1: 
+            v_xz = np.array([elb[0], 0, elb[2]])  # vector from shoulder to elbow projected to X/Z plane
+            v_xz0 = v_xz / np.linalg.norm(v_xz)          # normalize vector
 
-        v = np.copy(elb)   # vector from shoulder to elbow
-        v0 = v / np.linalg.norm(v)  # normalize vector
+            v = np.copy(elb)   # vector from shoulder to elbow
+            v0 = v / np.linalg.norm(v)  # normalize vector
 
-        angles[0] = np.arctan2(-v_xz0[2], v_xz0[0])
-        angles[1] = np.arctan2(v0[1], v0.dot(v_xz0))
+            angles[0] = np.arctan2(-v_xz0[2], v_xz0[0])
+            angles[1] = np.arctan2(v0[1], v0.dot(v_xz0))
 
-        # calculate vectors along upper and lower arms
-        w = tcp - elb  # vector from elbow to TCP
-        w0 = w / np.linalg.norm(w)
+            # calculate vectors along upper and lower arms
+            w = tcp - elb  # vector from elbow to TCP
+            w0 = w / np.linalg.norm(w)
 
-        # er = elbow rotation coordinate system
-        er = rotMatY(angles[0]) @ rotMatZ(angles[1]) # @ rotMatY(elbowTilt)
-        
-        distAlongX = np.dot(tcp, er[0:3,0]) - np.dot(elb, er[0:3,0])
-        radius = distAlongX * np.tan(-elbowTilt)
-        px_dash = np.dot(tcp, er[0:3,1]) - np.dot(elb, er[0:3,1])
-        py_dash = np.dot(tcp, er[0:3,2]) - np.dot(elb, er[0:3,2])
-        p_dash = np.array([px_dash, py_dash])
-        p_dash0 = p_dash / np.linalg.norm(p_dash)
-        circleCenterOnLowerArm = elb + er[0:3,0] * distAlongX
-        a = radius
-        c = np.linalg.norm(tcp - circleCenterOnLowerArm)
-        b = np.sqrt(c**2 - a**2)
-        px = b
-        py = radius
-        p = np.array([px, py])
-        p0 = p / np.linalg.norm(p)
-        angles[2] = np.arccos(np.dot(p0, p_dash0))
-        if (np.cross(p0, p_dash0) < 0):
-            angles[2] *= -1
-        
-        ### update rotation of elbow and calculate angles[3]
-        er = rotMatY(angles[0]) @ rotMatZ(angles[1]) @ rotMatX(angles[2]) @ rotMatY(elbowTilt)
-        angles[3] = np.arctan2(np.dot(er[0:3,1], w0), np.dot(er[0:3,0], w0))
-        
-        #print(round(angles[2] / np.pi * 180))
+            # er = elbow rotation coordinate system
+            er = rotMatY(angles[0]) @ rotMatZ(angles[1]) # @ rotMatY(elbowTilt)
+            
+            distAlongX = np.dot(tcp, er[0:3,0]) - np.dot(elb, er[0:3,0])
+            radius = distAlongX * np.tan(-elbowTilt)
+            px_dash = np.dot(tcp, er[0:3,1]) - np.dot(elb, er[0:3,1])
+            py_dash = np.dot(tcp, er[0:3,2]) - np.dot(elb, er[0:3,2])
+            p_dash = np.array([px_dash, py_dash])
+            p_dash0 = p_dash / np.linalg.norm(p_dash)
+            circleCenterOnLowerArm = elb + er[0:3,0] * distAlongX
+            a = radius
+            c = np.linalg.norm(tcp - circleCenterOnLowerArm)
+            b = np.sqrt(c**2 - a**2)
+            px = b
+            py = radius
+            p = np.array([px, py])
+            p0 = p / np.linalg.norm(p)
+            angles[2] = np.arccos(np.dot(p0, p_dash0))
+            if (np.cross(p0, p_dash0) < 0):
+                angles[2] *= -1
+            
+            ### update rotation of elbow and calculate angles[3]
+            er = rotMatY(angles[0]) @ rotMatZ(angles[1]) @ rotMatX(angles[2]) @ rotMatY(elbowTilt)
+            angles[3] = np.arctan2(np.dot(er[0:3,1], w0), np.dot(er[0:3,0], w0))
+            
+            #print(round(angles[2] / np.pi * 180))
 
 
-        ### calculate rotation of hand and calculate angles[4]
-        hr = rotMatY(angles[0]) @ rotMatZ(angles[1]) @ rotMatX(angles[2]) @ rotMatY(elbowTilt) @ rotMatZ(angles[3])
-        n = np.cross(hr[0:3,0], [0, 0, 1])
-        n /= np.linalg.norm(n)
-        angles[4] = -np.arctan2(np.dot(hr[0:3,1], n), np.dot(hr[0:3,2], n))
-        
-        ### finally: check if limits of joint angles are OK
-        if (checkJointLimits(angles)):
-            solutions.append(angles)
-        
+            ### calculate rotation of hand and calculate angles[4]
+            hr = rotMatY(angles[0]) @ rotMatZ(angles[1]) @ rotMatX(angles[2]) @ rotMatY(elbowTilt) @ rotMatZ(angles[3])
+            n = np.cross(hr[0:3,0], [0, 0, 1])
+            n /= np.linalg.norm(n)
+            angles[4] = -np.arctan2(np.dot(hr[0:3,1], n), np.dot(hr[0:3,2], n))
+            
+            ### finally: check if limits of joint angles are OK
+            if (checkJointLimits(angles)):
+                solutions.append(angles)
+            
     return solutions
 
