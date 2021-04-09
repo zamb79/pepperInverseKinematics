@@ -120,14 +120,14 @@ def inverseKinematics(x, y, z):
             angles = np.zeros(5)
             
             # Calculate angles 0 and 1: 
-            v_xz = np.array([elb[0], 0, elb[2]])  # vector from shoulder to elbow projected to X/Z plane
-            v_xz0 = v_xz / np.linalg.norm(v_xz)          # normalize vector
+            w = np.array([elb[0], 0, elb[2]])  # vector from shoulder to elbow projected to X/Z plane
+            w0 = w / np.linalg.norm(w)          # normalize vector
 
             v = np.copy(elb)   # vector from shoulder to elbow
             v0 = v / np.linalg.norm(v)  # normalize vector
 
-            angles[0] = np.arctan2(-v_xz0[2], v_xz0[0])
-            angles[1] = np.arctan2(v0[1], v0.dot(v_xz0))
+            angles[0] = np.arctan2(-w0[2], w0[0])
+            angles[1] = np.arctan2(v0[1], v0.dot(w0))
 
             # calculate vectors along upper and lower arms
             w = tcp - elb  # vector from elbow to TCP
@@ -136,13 +136,13 @@ def inverseKinematics(x, y, z):
             # er = elbow rotation coordinate system
             er = rotMatY(angles[0]) @ rotMatZ(angles[1]) # @ rotMatY(elbowTilt)
             
-            distAlongX = np.dot(tcp, er[0:3,0]) - np.dot(elb, er[0:3,0])
-            radius = distAlongX * np.tan(-elbowTilt)
+            d_eh = np.dot(tcp, er[0:3,0]) - np.dot(elb, er[0:3,0])
+            radius = d_eh * np.tan(-elbowTilt)
             px_dash = np.dot(tcp, er[0:3,1]) - np.dot(elb, er[0:3,1])
             py_dash = np.dot(tcp, er[0:3,2]) - np.dot(elb, er[0:3,2])
             p_dash = np.array([px_dash, py_dash])
             p_dash0 = p_dash / np.linalg.norm(p_dash)
-            circleCenterOnLowerArm = elb + er[0:3,0] * distAlongX
+            circleCenterOnLowerArm = elb + er[0:3,0] * d_eh
             a = radius
             c = np.linalg.norm(tcp - circleCenterOnLowerArm)
             b = np.sqrt(c**2 - a**2)
