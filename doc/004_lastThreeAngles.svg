@@ -121,7 +121,7 @@
        inkscape:collect="always">
       <path
          transform="matrix(-0.8,0,0,-0.8,-10,0)"
-         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.00000003pt;stroke-opacity:1"
+         style="fill:#00a500;fill-opacity:1;fill-rule:evenodd;stroke:#00a500;stroke-width:1.00000003pt;stroke-opacity:1"
          d="M 0,0 5,-5 -12.5,0 5,5 Z"
          id="path1644"
          inkscape:connector-curvature="0" />
@@ -303,8 +303,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.8542335"
-     inkscape:cx="142.86202"
-     inkscape:cy="205.26805"
+     inkscape:cx="183.32629"
+     inkscape:cy="493.48056"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -569,37 +569,11 @@
        id="path4533"
        inkscape:connector-curvature="0" />
     <path
-       style="fill:none;stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker1646)"
+       style="fill:none;stroke:#00a500;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker1646)"
        d="m 97.493707,89.612346 c 8.088353,-4.515998 8.990283,-10.184619 7.818743,-16.109305"
        id="path4535"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc" />
-    <g
-       transform="matrix(1.7445782,0,0,1.7445782,-55.305369,-29.814981)"
-       id="g5971">
-      <text
-         id="text4688"
-         style="font-variant:normal;font-weight:normal;font-size:3.51458383px;font-family:CMMI10;-inkscape-font-specification:CMMI10;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.35277775"
-         x="87.155502"
-         y="65.045547">
-        <tspan
-           style="stroke-width:0.35277775"
-           id="tspan4686"
-           y="65.045547"
-           x="87.155502">α</tspan>
-      </text>
-      <text
-         id="text4692"
-         style="font-variant:normal;font-weight:normal;font-size:2.46020174px;font-family:CMR7;-inkscape-font-specification:CMR7;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.35277775"
-         x="89.403755"
-         y="65.572945">
-        <tspan
-           style="stroke-width:0.35277775"
-           id="tspan4690"
-           y="65.572945"
-           x="89.403755">3</tspan>
-      </text>
-    </g>
     <text
        style="font-variant:normal;font-weight:normal;font-size:3.51458383px;font-family:CMMI10;-inkscape-font-specification:CMMI10;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.35277778"
        id="text4734"
@@ -998,15 +972,15 @@
        sodipodi:nodetypes="cc" />
     <text
        xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.58333302px;line-height:1.25;font-family:'TeX Gyre Bonum';-inkscape-font-specification:'TeX Gyre Bonum, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332;stroke-opacity:1;"
-       x="129.77084"
-       y="163.37756"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.58333302px;line-height:1.25;font-family:'TeX Gyre Bonum';-inkscape-font-specification:'TeX Gyre Bonum, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332;stroke-opacity:1"
+       x="129.91353"
+       y="162.52141"
        id="text24723-0-7-0-6-3"><tspan
          sodipodi:role="line"
          id="tspan24721-2-7-5-2-2"
-         x="129.77084"
-         y="163.37756"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.3499999px;font-family:'TeX Gyre Bonum';-inkscape-font-specification:'TeX Gyre Bonum, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332;stroke-opacity:1;">a</tspan></text>
+         x="129.91353"
+         y="162.52141"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.3499999px;font-family:'TeX Gyre Bonum';-inkscape-font-specification:'TeX Gyre Bonum, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332;stroke-opacity:1">a</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:7.05555534px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
@@ -1176,5 +1150,62 @@
          x="83.966873"
          y="164.94716"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.3499999px;font-family:'TeX Gyre Bonum';-inkscape-font-specification:'TeX Gyre Bonum, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332;stroke-opacity:1">a</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.58333302px;line-height:1.25;font-family:'TeX Gyre Bonum';-inkscape-font-specification:'TeX Gyre Bonum, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332;stroke-opacity:1"
+       x="145.60959"
+       y="148.68034"
+       id="text24723-0-7-0-6-3-0"><tspan
+         sodipodi:role="line"
+         id="tspan24721-2-7-5-2-2-7"
+         x="145.60959"
+         y="148.68034"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.3499999px;font-family:'TeX Gyre Bonum';-inkscape-font-specification:'TeX Gyre Bonum, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332;stroke-opacity:1">b</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:7.05555534px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="158.85265"
+       y="160.72914"
+       id="text1223"><tspan
+         sodipodi:role="line"
+         id="tspan1221"
+         x="158.85265"
+         y="167.16614"
+         style="stroke-width:0.26458332"></tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.58333302px;line-height:1.25;font-family:'TeX Gyre Bonum';-inkscape-font-specification:'TeX Gyre Bonum, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332;stroke-opacity:1"
+       x="159.65073"
+       y="160.68315"
+       id="text24723-0-7-0-6-3-0-7"><tspan
+         sodipodi:role="line"
+         id="tspan24721-2-7-5-2-2-7-8"
+         x="159.65073"
+         y="160.68315"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.3499999px;font-family:'TeX Gyre Bonum';-inkscape-font-specification:'TeX Gyre Bonum, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332;stroke-opacity:1">c</tspan></text>
+    <text
+       y="84.786598"
+       x="101.40032"
+       style="font-variant:normal;font-weight:normal;font-size:4.29201412px;font-family:CMR7;-inkscape-font-specification:CMR7;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.61544842"
+       id="text4692-1-9-1">
+      <tspan
+         x="101.40032"
+         y="84.786598"
+         id="tspan4690-7-2-18"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.29189444px;font-family:Calibri;-inkscape-font-specification:'Calibri, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.61544842">3</tspan>
+    </text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:7.05555534px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="97.817192"
+       y="83.580429"
+       id="text4899-0-2"><tspan
+         sodipodi:role="line"
+         id="tspan4897-0-1"
+         x="97.817192"
+         y="83.580429"
+         style="stroke-width:0.26458332"><tspan
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.05555534px;font-family:Calibri;-inkscape-font-specification:'Calibri, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.26458332"
+   id="tspan4901-0-8">α</tspan> </tspan></text>
   </g>
 </svg>

@@ -7,9 +7,11 @@
 \usepackage{ngerman}
 \usepackage[a4paper, total={6in, 8in}]{geometry}
 
-\title{Pepper's rechte Hand: Inverse Kinematik (**Entwurf!**)} % Title of the assignment
+\title{Pepper's rechte Hand: Inverse Kinematik} % Title of the assignment
 
-\author{Sebastian Zambal} % Author name and email address
+\author{}
+
+\date{}
 
 %----------------------------------------------------------------------------------------
 
@@ -39,28 +41,43 @@ Das Ziel ist es zunächst, Zentrum und Radius des Kreises zu bestimmen, auf dem d
 Der Verbindungsvektor $u$ zeigt von $s$ nach $t$: $u = t - s$. Die Punkte $s$ und $t$ (Kreismittelpunkte) definieren gemeinsam mit den entsprechenden Radien $r_s$ und $r_t$ zwei Kugeln im Raum. Die Schnittmenge dieser beiden Kugeln ist ein Kreis mit Mittelpunkt $c$ und Radius $r_c$. Ziel des aktuellen Kapitels ist es, $c$ und $r_c$ zu bestimmmen. Wir betrachten dazu die Projektion in eine Ebene, die $s$ und $t$ enthält. Die Länge des Vektors $u$ von $s$ nach $t$ unterteilen wir in zwei Strecken mit den Längen $u_s$ und $u_t$, sodaß $|u| = u_l = u_s + u_t$. Beide Strecken treffen sich im Kreismittelpunkt $c$, wobei die Kreisebene rechtwinkelig auf $u$ stehen muss.
 \begin{eqnarray}
 {u_s}^2 + {r_c}^2 &=& {r_s}^2  \label{eqSphere1}  \\
-{u_t}^2 + {r_c}^2 &=& {r_t}^2  \label{eqSphere2}  \\
+{u_t}^2 + {r_c}^2 &=& {r_t}^2  \label{eqSphere2}
 \end{eqnarray}
 
-Aus Gleichungen \ref{eqSphere1} und \ref{eqSphere2} können wir jetzt den Kreismittelpunkt $c$ und den Radius $r_c$ berechnen.
+Aus Gleichungen \ref{eqSphere1} und \ref{eqSphere2} können wir jetzt den Kreismittelpunkt $c$ und den Radius $r_c$ berechnen. Wir setzen die beiden Terme für $r_c$ gleich. In Kombination mit der Bedingung, dass die Summe der Längen $u_s$ und $u_t$ gleich $u_l$ sein muss erhalten wir das folgende Gleichungssystem mit den Unbekannten $u_s$ und $u_t$:
 
 \begin{eqnarray}
 {r_s}^2 - {u_s}^2 &=& {r_t}^2 - {u_t}^2  \\
-    u_s + u_t &=& u_l \\
-        \nonumber   \\
-        {u_s}^2 &=& {r_s}^2 - {r_t}^2 + {u_t}^2 \\
-          u_t &=& u_l - u_s  \\
-        {u_s}^2 &=& {r_s}^2 - {r_t}^2 + (u_l-u_s)^2  \\
-        {u_s}^2 &=& {r_s}^2 - {r_t}^2 + ({u_l}^2 - 2u_lu_s + {u_s}^2)  \\
-        {u_s}^2 &=& {r_s}^2 - {r_t}^2 + {u_l}^2 - 2u_lu_s + {u_s}^2  \\
-		\nonumber   \\
-          u_s &=& ({r_s}^2 - {r_t}^2 + {u_l}^2) / 2u_l   \\
-          u_t &=& ({r_t}^2 - {r_s}^2 + {u_l}^2) / 2u_l   \\
-		\nonumber   \\
-          r_c &=& \sqrt{{r_s}^2 - {u_s}^2} \\
-		\nonumber   \\
-          c &=& s + u_s * u / |u|
+    u_s + u_t &=& u_l
 \end{eqnarray}
+
+Aus der zweiten Gleichung oben drücken wir $u_t$ aus als: $u_t = u_l - u_s$. Durch Einsetzen in die erste Gleichung können wir $u_s$ ausdrücken als:
+
+\begin{eqnarray}
+        {u_s}^2 &=& {r_s}^2 - {r_t}^2 + (u_l-u_s)^2  \\
+        {u_s}^2 &=& {r_s}^2 - {r_t}^2 + {u_l}^2 - 2u_lu_s + {u_s}^2  \\
+        0 &=& {r_s}^2 - {r_t}^2 + {u_l}^2 - 2u_lu_s  \\
+		2u_lu_s &=& {r_s}^2 - {r_t}^2 + {u_l}^2  \\
+        u_s &=& ({r_s}^2 - {r_t}^2 + {u_l}^2) / 2u_l   \\
+\end{eqnarray}
+
+Analog dazu kann auch $u_t$ abgeleitet werden als:
+
+\begin{equation}
+    u_t = ({r_t}^2 - {r_s}^2 + {u_l}^2) / 2u_l   
+\end{equation}
+
+und es ergibt sich für $r_c$:
+
+\begin{equation}
+    r_c = \sqrt{{r_s}^2 - {u_s}^2}
+\end{equation}
+
+und für $c$:
+
+\begin{equation}
+   c = s + u_s * u / |u|
+\end{equation}
 
 Ergebnis: 
 \begin{itemize}
@@ -102,7 +119,7 @@ e_x &=& d_e/u^*_x - u^*_y \cdot e_y / n_x - u^*_z \cdot e_z / u^*_x  \\
 e_x &=& d_e/u^*_x - u^*_z \cdot e_z / u^*_x + e_y \cdot (-u^*_y / u^*_x)  =  B \cdot e_y + A  \label{eqEx}
 \end{eqnarray}
 
-wobei $A$ und $B$ folgende komplizierte Terme bezeichnen:
+wobei $A$ und $B$ folgende Terme bezeichnen:
 
 \begin{eqnarray}
 A &=& d_e/u^*_x - u^*_z * e_z / u^*_x  \\
