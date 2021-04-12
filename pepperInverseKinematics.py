@@ -1,4 +1,5 @@
 import numpy as np
+import time
 
 # Tilt of elbow rotation axis
 elbowTilt = -9.0 / 180.0 * np.pi
@@ -52,7 +53,9 @@ def checkJointLimits(angles):
     if (a[1] < -89.5 ) or (a[1] > -0.5 ): return False
     if (a[2] < -119.5) or (a[2] > 119.5): return False
     if (a[3] <  0.5  ) or (a[3] > 89.5 ): return False
-    if (a[4] < -104.5) or (a[4] > 104.5): return False
+    #if (a[4] < -104.5) or (a[4] > 104.5): return False
+    if (a[4] < -104.5): angles[4] = -104.5 * np.pi / 180
+    if (a[4] > 104.5): angles[4] = 104.5 * np.pi / 180
     return True
 
 def calculateElbow(circleCenter, circleRadius, circlePlaneNormal, tcpZ, plusOrMinus = 0):
@@ -62,7 +65,7 @@ def calculateElbow(circleCenter, circleRadius, circlePlaneNormal, tcpZ, plusOrMi
     
     # Solve squared equation to get elbow point [xe, ye, ze]
     # z-Coordinate of elbow is equal to z-Coordinate of TCP
-    ze = tcpZ # z-coordinate of elbow is equal to z-coordinate of TCP.
+    ze = tcpZ / 2  # z-coordinate of elbow is equal to z-coordinate of TCP.
     n = circlePlaneNormal # normal-vector of circle plane is n
     d = np.dot(n, cc) # parameter d of circle plane is equal to dot(n, cc)
     if (np.abs(n[0]) > np.abs(n[1])):
@@ -115,19 +118,19 @@ def inverseKinematics(x, y, z):
         elb = calculateElbow(cc, cr, u0, z, i)
         print("elb: ", elb)
         if len(elb) > 0:
-        
+            
             # We know the elbow point, so now we can calculate the angles step by step
             angles = np.zeros(5)
             
             # Calculate angles 0 and 1: 
-            w = np.array([elb[0], 0, elb[2]])  # vector from shoulder to elbow projected to X/Z plane
-            w0 = w / np.linalg.norm(w)          # normalize vector
+            v_xz = np.array([elb[0], 0, elb[2]])  # vector from shoulder to elbow projected to X/Z plane
+            v_xz0 = v_xz / np.linalg.norm(v_xz)   # normalize vector
 
             v = np.copy(elb)   # vector from shoulder to elbow
             v0 = v / np.linalg.norm(v)  # normalize vector
 
-            angles[0] = np.arctan2(-w0[2], w0[0])
-            angles[1] = np.arctan2(v0[1], v0.dot(w0))
+            angles[0] = np.arctan2(-v_xz0[2], v_xz0[0])
+            angles[1] = np.arctan2(v0[1], v0.dot(v_xz0))
 
             # calculate vectors along upper and lower arms
             w = tcp - elb  # vector from elbow to TCP
@@ -136,30 +139,41 @@ def inverseKinematics(x, y, z):
             # er = elbow rotation coordinate system
             er = rotMatY(angles[0]) @ rotMatZ(angles[1]) # @ rotMatY(elbowTilt)
             
-            d_eh = np.dot(tcp, er[0:3,0]) - np.dot(elb, er[0:3,0])
-            radius = d_eh * np.tan(-elbowTilt)
-            px_dash = np.dot(tcp, er[0:3,1]) - np.dot(elb, er[0:3,1])
-            py_dash = np.dot(tcp, er[0:3,2]) - np.dot(elb, er[0:3,2])
-            p_dash = np.array([px_dash, py_dash])
-            p_dash0 = p_dash / np.linalg.norm(p_dash)
-            circleCenterOnLowerArm = elb + er[0:3,0] * d_eh
-            a = radius
-            c = np.linalg.norm(tcp - circleCenterOnLowerArm)
-            b = np.sqrt(c**2 - a**2)
-            px = b
-            py = radius
-            p = np.array([px, py])
-            p0 = p / np.linalg.norm(p)
-            angles[2] = np.arccos(np.dot(p0, p_dash0))
-            if (np.cross(p0, p_dash0) < 0):
-                angles[2] *= -1
             
+            # Calculate distance from elbow to point h in plane epsilon_h
+            d_eh = np.dot(tcp, er[0:3,0]) - np.dot(elb, er[0:3,0])
+            
+            # Calculate radius around point h
+            rh = d_eh * np.tan(-elbowTilt)
+            
+            # calculate 2d coordinates of t in plane epsilon_h
+            tx_h = np.dot(tcp, er[0:3,1]) - np.dot(elb, er[0:3,1])
+            ty_h = np.dot(tcp, er[0:3,2]) - np.dot(elb, er[0:3,2])
+            t_h = np.array([tx_h, ty_h])
+            t_h0 = t_h / np.linalg.norm(t_h)
+            
+            # h = elbow + d_eh * x-axis of upper arm coordinate system
+            h = elb + er[0:3,0] * d_eh
+            
+            # Calculate rectangular triangle edges a, b, and c
+            a = rh
+            c = np.linalg.norm(tcp - h)
+            b = np.sqrt(c**2 - a**2)
+            
+            # Calculate point q in plane epsilon_h
+            qx = b
+            qy = rh
+            q = np.array([qx, qy])
+            q0 = q / np.linalg.norm(q)
+            
+            # calculate alpha_2
+            angles[2] = np.arccos(np.dot(q0, t_h0))
+            if (np.cross(q0, t_h0) < 0):
+                angles[2] *= -1
+                
             ### update rotation of elbow and calculate angles[3]
             er = rotMatY(angles[0]) @ rotMatZ(angles[1]) @ rotMatX(angles[2]) @ rotMatY(elbowTilt)
             angles[3] = np.arctan2(np.dot(er[0:3,1], w0), np.dot(er[0:3,0], w0))
-            
-            #print(round(angles[2] / np.pi * 180))
-
 
             ### calculate rotation of hand and calculate angles[4]
             hr = rotMatY(angles[0]) @ rotMatZ(angles[1]) @ rotMatX(angles[2]) @ rotMatY(elbowTilt) @ rotMatZ(angles[3])
@@ -168,8 +182,8 @@ def inverseKinematics(x, y, z):
             angles[4] = -np.arctan2(np.dot(hr[0:3,1], n), np.dot(hr[0:3,2], n))
             
             ### finally: check if limits of joint angles are OK
+            #angles[4] = 0
             if (checkJointLimits(angles)):
                 solutions.append(angles)
             
     return solutions
-
